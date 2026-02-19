@@ -13,7 +13,6 @@ class BooksSeeders extends Seeder
      */
     public function run(): void
     {
-        // 1. Importar 10 libros clásicos del CSV
         $path = database_path('data/libros.csv');
         
         if (!file_exists($path)) {
@@ -22,11 +21,10 @@ class BooksSeeders extends Seeder
         }
         
         $file = fopen($path, 'r');
-        fgetcsv($file); // Salta encabezados
+        fgetcsv($file);
         
         while ($row = fgetcsv($file)) {
             if (!empty($row[0])) {
-                // Convertir status a booleano (true si es "disponible")
                 $status = strtolower(trim($row[5])) === 'disponible' ? true : false;
                 
                 Book::create([
@@ -42,11 +40,9 @@ class BooksSeeders extends Seeder
         fclose($file);
         $this->command->info('✓ 10 libros clásicos importados desde CSV');
         
-        // 2. Generar 90 libros adicionales con el factory
         Book::factory(90)->create();
         $this->command->info('✓ 90 libros adicionales generados automáticamente');
         
-        // 3. Validación
         $totalBooks = Book::count();
         $this->command->info("✓ Total de libros en la base de datos: $totalBooks");
     }

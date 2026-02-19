@@ -24,7 +24,6 @@ class LoanController extends Controller
             ], 422);
         }
         
-        // 3. Crear préstamo
         $loan = Loan::create([
             'nombre' => $request->nombre,
             'fecha_hora_prestamo' => now(),
